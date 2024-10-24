@@ -44,27 +44,27 @@ public class Basics {
                 when().
                 put("/maps/api/place/update/json").
                 then().
-                log().all().
+                // log().all().
                 assertThat().
                 statusCode(200).
                 body("msg", equalTo("Address successfully updated")).extract().response().asString();
 
         JsonPath js2 = new JsonPath(testeJson);
         String endereco = js2.getString("address");
-        System.out.println(endereco);
 
-//         Get Place
-        String getPlaceResponse = given().log().all().queryParam("key", "qaclick123")
-                .queryParam("placeid", placeId)
-                .when()
-                .get("/maps/api/place/get/json")
-                .then().assertThat().log().all().statusCode(200)
-                .extract().response().asString();
+        // Get Place
+        String getPlaceResponse = given().
+                log().all().
+                queryParam("key", "qaclick123").
+                queryParam("place_id", placeId).
+                when().
+                get("/maps/api/place/get/json").
+                then().
+                assertThat().statusCode(200).
+                extract().response().asString();
 
-        System.out.println(getPlaceResponse);
-
-//        JsonPath js1 = new JsonPath(getPlaceResponse);
-//        String actualAddress = js1.getString("address");
-//        System.out.println(actualAddress);
+        JsonPath js3 = new JsonPath(getPlaceResponse);
+        String updatedAddress = js3.getString("address");
+        System.out.println("Este é o endereço atualizado = " + updatedAddress);
     }
 }
