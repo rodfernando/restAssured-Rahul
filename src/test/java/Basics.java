@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
+import org.testng.Assert;
 
 public class Basics {
 
@@ -25,20 +26,20 @@ public class Basics {
 
         System.out.println(response);
 
-        JsonPath js = new JsonPath(response); // for parsing Json
-        String placeId = js.getString("place_id");
+        JsonPath js1 = ReusableMethods.rawToJson(response);
+        String placeId = js1.getString("place_id");
         System.out.println("Este é o place_id = " + placeId);
 
     // Update Place
         String newAddress = "70 Summer walk, USA";
 
-        String testeJson = given().
+                given().
                 log().all().
                 queryParam("key", "qaclick123").
                 header("Content-Type", "application/json").
                 body("{\n" +
                         "\"place_id\":\""+placeId+"\",\n" +
-                        "\"address\":\"70 Summer walk, USA\",\n" +
+                        "\"address\":\""+newAddress+"\",\n" +
                         "\"key\":\"qaclick123\"\n" +
                         "}\n").
                 when().
@@ -47,10 +48,8 @@ public class Basics {
                 // log().all().
                 assertThat().
                 statusCode(200).
-                body("msg", equalTo("Address successfully updated")).extract().response().asString();
+                body("msg", equalTo("Address successfully updated"));
 
-        JsonPath js2 = new JsonPath(testeJson);
-        String endereco = js2.getString("address");
 
         // Get Place
         String getPlaceResponse = given().
@@ -63,8 +62,10 @@ public class Basics {
                 assertThat().statusCode(200).
                 extract().response().asString();
 
-        JsonPath js3 = new JsonPath(getPlaceResponse);
-        String updatedAddress = js3.getString("address");
+        JsonPath js2 = ReusableMethods.rawToJson(getPlaceResponse);
+        String updatedAddress = js2.getString("address");
         System.out.println("Este é o endereço atualizado = " + updatedAddress);
+
+        Assert.assertEquals(updatedAddress, newAddress);
     }
 }
