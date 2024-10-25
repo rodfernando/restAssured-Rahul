@@ -1,5 +1,6 @@
 import static io.restassured.RestAssured.given;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import files.Payload;
@@ -9,12 +10,12 @@ import utils.ReusableMethods;
 
 public class DynamicJson {
 
-    @Test
-    public void addBook() {
+    @Test(dataProvider = "BooksData")
+    public void addBook(String aisle, String isbn) {
         RestAssured.baseURI = "http://216.10.245.166";
         String response = given()
                 .header("Content-Type", "application/json")
-                .body(Payload.addBook())
+                .body(Payload.addBook(aisle, isbn))
                 .when()
                 .post("/Library/Addbook.php")
                 .then()
@@ -24,5 +25,16 @@ public class DynamicJson {
         JsonPath js = ReusableMethods.rawToJson(response);
         Object idBook = js.get("ID");
         System.out.println(idBook);
+
+        // Delete book
+
+
+
+    }
+
+
+    @DataProvider(name="BooksData")
+    public Object[][] getData() {
+        return new Object[][] {{"fqsa", "321321"},{"sdsa", "897889"},{"lkljk", "657765"}};
     }
 }
