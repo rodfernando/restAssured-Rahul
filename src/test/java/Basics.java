@@ -1,12 +1,8 @@
-import files.Payload;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import utils.JsonFileReader;
 import utils.ReusableMethods;
-
 import java.io.IOException;
-import java.nio.file.*;
-
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
