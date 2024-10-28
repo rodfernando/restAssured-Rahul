@@ -1,8 +1,8 @@
+import files.Payload;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
-import utils.JsonFileReader;
 import utils.ReusableMethods;
-import java.io.IOException;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -10,14 +10,14 @@ import org.testng.Assert;
 
 public class Basics {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         RestAssured.baseURI = "https://rahulshettyacademy.com";
         String response = given().
                 log().all().
                 queryParam("key", "qaclick123").
                 header("Content-Type", "application/json").
-                body(JsonFileReader.jsonReader("src\\test\\java\\JsonDatas\\addPlace.json")).
+                body(Payload.addPlace()).
                 when().
                 post("/maps/api/place/add/json").
                 then().

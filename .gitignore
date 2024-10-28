@@ -33,6 +33,8 @@ build/
 
 ### VS Code ###
 .vscode/
+# Ignorar config.properties para manter o token seguro
+src\test\resources\config.properties
 
 ### Mac OS ###
 .DS_Store
