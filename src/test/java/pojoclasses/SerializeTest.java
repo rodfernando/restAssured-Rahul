@@ -39,5 +39,4 @@ public class SerializeTest {
         System.out.println(response);
     }
 
-
 }
